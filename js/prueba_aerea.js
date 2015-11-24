@@ -27,7 +27,8 @@ var cursors;
 
 var stars;
 var pipe;
-
+var tubo;
+    
 var score = 0;
 var scoreText;
 var maxScore;
@@ -58,14 +59,14 @@ function create() {
 
 
     // JUGADOR
-    player = game.add.sprite(ancho*0.2, alto-80, skin);
+    player = game.add.sprite(ancho/2 - 24, alto/2 +25, skin);
 
     // ACTIVA FISICAS PARA EL JUGADOR
     game.physics.arcade.enable(player);
 
     // PROPIEDADES FISICAS DEL JUGADOR
 
-    //player.body.immovable = true;
+    player.body.immovable = true;
     player.body.bounce.y = 0; // REBOTE Y
     player.body.bounce.x = 0; // REBOTE X
     player.body.gravity.y = 0; // ALTURA DE SALTO
@@ -87,6 +88,10 @@ function create() {
     scoreText = game.add.text(16, 10, 'Score: ' + score + '\nBest: ' + maxScore, {
         fontSize : '16px', fill : '#000'
     });
+    
+    pipe = game.add.group();
+    pipe.enableBody = true;
+    tubo = pipe.create(ancho, 100, 'pipe');
 
    
     cursors = game.input.keyboard.createCursorKeys();
@@ -97,6 +102,7 @@ function create() {
 function upload() {
 
     game.physics.arcade.collide(player, ground);
+    game.physics.arcade.collide(player, pipe);
 
     
     if(
@@ -110,24 +116,30 @@ function upload() {
     
     player.body.velocity.y = 0;
     player.body.velocity.x = 0;
+    tubo.body.velocity.x = 0;
+    tubo.body.velocity.y = 0;
     
     if(cursors.up.isDown){
         player.animations.play('up');
-        player.body.velocity.y = -150;        
+        //player.body.velocity.y = -150;
+        tubo.body.velocity.y = 150;
     }
 
     if(cursors.down.isDown){
         player.animations.play('down');
-        player.body.velocity.y = 150;        
+        //player.body.velocity.y = 150;
+        tubo.body.velocity.y = -150;
     }
 
     if(cursors.left.isDown){
-        player.body.velocity.x = -150;        
+        //player.body.velocity.x = -150;        
+        tubo.body.velocity.x = 150;        
     }
 
     if(cursors.right.isDown){
         player.animations.play('right');
-        player.body.velocity.x = 150;        
+        //player.body.velocity.x = 150;        
+        tubo.body.velocity.x = -150;        
     }
     
     
